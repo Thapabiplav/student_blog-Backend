@@ -32,6 +32,23 @@ exports.getAllBlogs = async (req, res) => {
   });
 };
 
+exports.getUserBlogs = async (req, res) => {
+  if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
+  const data = await blogs.findAll({
+    where: { userEmail: req.user?.email },
+  });
+
+  if (data.length === 0) {
+    return res.status(404).json({ message: "No blogs found" });
+  }
+
+  res.status(200).json({
+    message: "Your blogs fetched successfully",
+    data,
+  });
+};
+
 exports.getBlogById = async (req, res) => {
   const { id } = req.params;
 
@@ -95,23 +112,4 @@ exports.deleteBlog = async (req, res) => {
   });
 };
 
-exports.getUserBlogs = async (req, res) => {
-  if (!req.user) return res.status(401).json({ message: "Unauthorized" });
 
-  console.log("Logged-in user email:", req.user.email);
-
-  const data = await blogs.findAll({
-    where: { userEmail: req.user.email },
-  });
-
-  console.log("Blogs fetched:", data);
-
-  if (!data || data.length === 0) {
-    return res.status(404).json({ message: "No blogs found" });
-  }
-
-  res.status(200).json({
-    message: "Your blogs fetched successfully",
-    data,
-  });
-};

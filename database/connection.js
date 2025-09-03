@@ -32,6 +32,7 @@ db.sequelize = sequelize;
 
 db.users = require('../models/userModel.js') (sequelize,DataTypes)
 db.blogs = require('../models/blogModel.js') (sequelize,DataTypes)
+db.comments = require('../models/commentModel.js') (sequelize,DataTypes)
 
 
 
